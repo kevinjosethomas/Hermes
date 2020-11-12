@@ -1,5 +1,6 @@
 token.pickle
 credentials.json
+data/last_email.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
