@@ -13,6 +13,14 @@ bot = commands.Bot(
     intents=discord.Intents.all()
 )
 
+
+with open("data/config.json", "r", encoding="utf-8") as CONFIG:
+    bot.c = cj.load(CONFIG)
+
+with open("data/emojis.json", "r", encoding="utf-8") as EMOJIS:
+    bot.e = cj.load(EMOJIS)
+
+
 bot.help_command = None
 
 bot.cog_list = [
