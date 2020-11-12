@@ -16,6 +16,7 @@ bot = commands.Bot(
 bot.help_command = None
 
 bot.cog_list = [
+    "cogs.core.events",
     "cogs.automation.email"
 ]
 for cog in bot.cog_list:
