@@ -33,7 +33,7 @@ for cog in bot.cog_list:
 
 @bot.check
 def check_author(ctx):
-    return ctx.author.id == 418707912836382721
+    return ctx.author.id == bot.c.me
 
 
 bot.run(DISCORD_TOKEN)
