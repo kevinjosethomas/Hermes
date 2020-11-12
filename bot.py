@@ -23,4 +23,9 @@ for cog in bot.cog_list:
     bot.load_extension(cog)
 
 
+@bot.check
+def check_author(ctx):
+    return ctx.author.id == 418707912836382721
+
+
 bot.run(DISCORD_TOKEN)
