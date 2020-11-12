@@ -1,7 +1,7 @@
 import os
 import discord
 import classyjson as cj
-from dotenv from load_dotenv
+from dotenv import load_dotenv
 from discord.ext import commands
 
 load_dotenv()
