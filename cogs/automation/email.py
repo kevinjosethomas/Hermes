@@ -10,7 +10,7 @@ from googleapiclient.discovery import build
 
 class Email(commands.Cog):
 
-    def __init__(self, bot):
+    def __init__(self, bot: commands.Bot):
         self.bot = bot
 
         SCOPES = ['https://www.googleapis.com/auth/gmail.readonly']
@@ -98,5 +98,6 @@ class Email(commands.Cog):
     async def before_checking_mail(self):
         await self.bot.wait_until_ready()
 
-def setup(bot):
+
+def setup(bot: commands.Bot):
     bot.add_cog(Email(bot))

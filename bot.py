@@ -33,7 +33,7 @@ for cog in bot.cog_list:
 
 
 @bot.check
-def check_author(ctx):
+def check_author(ctx: commands.Context):
     return ctx.author.id == bot.c.me
 
 
