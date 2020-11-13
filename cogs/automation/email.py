@@ -32,63 +32,67 @@ class Email(commands.Cog):
         """Checks for new email every 10 minutes"""
 
         try:
-            last_email = open(Path("data/last_email.txt"), "r")
-            last_email_id = last_email.read()
-        except FileNotFoundError:
-            last_email_id = None
+            try:
+                last_email = open(Path("data/last_email.txt"), "r")
+                last_email_id = last_email.read()
+            except FileNotFoundError:
+                last_email_id = None
 
-        results = self.service.users().messages().list(userId='me').execute()
-        emails = results.get('messages', [])
+            results = self.service.users().messages().list(userId='me').execute()
+            emails = results.get('messages', [])
 
-        # Latest email is not recorded
-        if not last_email_id:
-            update_email = open(Path("data/last_email.txt"), "w")
-            update_email.write(emails[0]["id"])
-            return
-
-        if emails:
-            latest_email = self.service.users().messages().get(userId='me', id=emails[0]["id"]).execute()
-
-            # No new emails
-            if latest_email["id"] == last_email_id:
+            # Latest email is not recorded
+            if not last_email_id:
+                update_email = open(Path("data/last_email.txt"), "w")
+                update_email.write(emails[0]["id"])
                 return
 
-            new_emails = []
+            if emails:
+                latest_email = self.service.users().messages().get(userId='me', id=emails[0]["id"]).execute()
 
-            for email in emails[:10]:
-                email_content = self.service.users().messages().get(userId='me', id=email["id"]).execute()
+                # No new emails
+                if latest_email["id"] == last_email_id:
+                    return
 
-                if email_content["id"] == last_email_id:
-                    break
+                new_emails = []
 
-                new_emails.append(email_content)
+                for email in emails[:10]:
+                    email_content = self.service.users().messages().get(userId='me', id=email["id"]).execute()
 
-            for email in new_emails[::-1]:
+                    if email_content["id"] == last_email_id:
+                        break
 
-                headers = email["payload"]["headers"]
+                    new_emails.append(email_content)
 
-                for header in headers:
-                    if header["name"].lower() == "subject":
-                        SUBJECT = header["value"]
-                    elif header["name"].lower() == "from":
-                        FROM = header["value"].replace("<", "``<").replace(">", ">``")
+                for email in new_emails[::-1]:
 
-                description = f"📨 **{SUBJECT}**\n" \
-                            f"**From:** {FROM}\n" \
-                            f"```{email['snippet'][:924]}```"
+                    headers = email["payload"]["headers"]
 
-                email_date = datetime.fromtimestamp((int(email["internalDate"]) / 1000), tz=pytz.timezone("America/Toronto"))
+                    for header in headers:
+                        if header["name"].lower() == "subject":
+                            SUBJECT = header["value"]
+                        elif header["name"].lower() == "from":
+                            FROM = header["value"].replace("<", "``<").replace(">", ">``")
 
-                embed = discord.Embed(
-                    description=description,
-                    timestamp=email_date,
-                    color=self.bot.c.color
-                )
+                    description = f"📨 **{SUBJECT}**\n" \
+                                f"**From:** {FROM}\n" \
+                                f"```{email['snippet'][:924]}```"
 
-                await self.bot.me.send(embed=embed)
+                    email_date = datetime.fromtimestamp((int(email["internalDate"]) / 1000), tz=pytz.timezone("America/Toronto"))
 
-                update_email = open(Path("data/last_email.txt"), "w")
-                update_email.write(email["id"])
+                    embed = discord.Embed(
+                        description=description,
+                        timestamp=email_date,
+                        color=self.bot.c.color
+                    )
+
+                    await self.bot.me.send(embed=embed)
+
+                    update_email = open(Path("data/last_email.txt"), "w")
+                    update_email.write(email["id"])
+
+        except Exception as e:
+            print(e)
 
     @check_mail.before_loop
     async def before_checking_mail(self):
