@@ -25,7 +25,8 @@ bot.help_command = None
 
 bot.cog_list = [
     "cogs.core.events",
-    "cogs.automation.email"
+    "cogs.automation.email",
+    "cogs.commands.owner"
 ]
 for cog in bot.cog_list:
     bot.load_extension(cog)
