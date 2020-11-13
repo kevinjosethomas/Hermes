@@ -100,7 +100,7 @@ class Owner(commands.Cog):
         await ctx.send(f"{self.bot.e.cross} Error while reloading the specified extension")
 
     @commands.command()
-    @is_staff()
+    @commands.is_owner()
     async def eval(self, ctx: commands.Context, *, cmd: str):
         """Evaluates the provided code"""
 
@@ -137,7 +137,7 @@ class Owner(commands.Cog):
         await ctx.send(result)
 
     @commands.command()
-    @is_staff()
+    @commands.is_owner()
     async def pull(self, ctx: commands.Context):
         """Pulls latest code from GitHub"""
 
@@ -145,7 +145,7 @@ class Owner(commands.Cog):
         await ctx.message.add_reaction(self.bot.e.check)
 
     @commands.command()
-    @is_staff()
+    @commands.is_owner()
     async def restart(self, ctx: commands.Context):
         """Restarts the bot instance"""
 
