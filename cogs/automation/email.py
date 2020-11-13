@@ -1,5 +1,3 @@
-from __future__ import print_function
-
 import os
 import pytz
 import pickle
