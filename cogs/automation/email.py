@@ -13,6 +13,7 @@ class Email(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
+        # Whats this for? its unused
         SCOPES = ['https://www.googleapis.com/auth/gmail.readonly']
 
         creds = None
