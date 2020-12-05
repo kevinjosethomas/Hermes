@@ -21,7 +21,7 @@ class Email(commands.Cog):
                 creds = pickle.load(token)
 
         if not creds or not creds.valid:
-            print("Please provide a valid token.pickle with LOGIN CREDENTIALS!")
+            print("Please provide a valid token.pickle with LOGIN CREDENTIALS")
 
         self.service = build('gmail', 'v1', credentials=creds)
 
@@ -48,7 +48,8 @@ class Email(commands.Cog):
                 return
 
             if emails:
-                latest_email = self.service.users().messages().get(userId='me', id=emails[0]["id"]).execute()
+                latest_email = self.service.users().messages().get(
+                    userId='me', id=emails[0]["id"]).execute()
 
                 # No new emails
                 if latest_email["id"] == last_email_id:
@@ -57,7 +58,8 @@ class Email(commands.Cog):
                 new_emails = []
 
                 for email in emails[:10]:
-                    email_content = self.service.users().messages().get(userId='me', id=email["id"]).execute()
+                    email_content = self.service.users().messages().get(
+                        userId='me', id=email["id"]).execute()
 
                     if email_content["id"] == last_email_id:
                         break
@@ -72,13 +74,15 @@ class Email(commands.Cog):
                         if header["name"].lower() == "subject":
                             SUBJECT = header["value"]
                         elif header["name"].lower() == "from":
-                            FROM = header["value"].replace("<", "``<").replace(">", ">``")
+                            FROM = header["value"].replace(
+                                "<", "``<").replace(">", ">``")
 
                     description = f"📨 **{SUBJECT}**\n" \
-                                f"**From:** {FROM}\n" \
-                                f"```{email['snippet'][:924]}```"
+                        f"**From:** {FROM}\n" \
+                        f"```{email['snippet'][:924]}```"
 
-                    email_date = datetime.fromtimestamp((int(email["internalDate"]) / 1000), tz=pytz.timezone("America/Toronto"))
+                    email_date = datetime.fromtimestamp(
+                        (int(email["internalDate"]) / 1000), tz=pytz.timezone("America/Toronto"))
 
                     embed = discord.Embed(
                         description=description,

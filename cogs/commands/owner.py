@@ -3,7 +3,6 @@ import ast
 import time
 import asyncio
 import discord
-from typing import Union
 from discord.ext import commands
 
 
@@ -51,7 +50,9 @@ class Owner(commands.Cog):
     async def unload_error(self, ctx: commands.Context, error):
         """Handles errors triggered while unloading cogs"""
 
-        await ctx.send(f"{self.bot.e.cross} Error while unloading the specified extension")
+        await ctx.send(
+            f"{self.bot.e.cross} Error while unloading the specified extension"
+            )
 
     @commands.command()
     @commands.has_permissions(administrator=True)
@@ -74,7 +75,9 @@ class Owner(commands.Cog):
     async def load_error(self, ctx: commands.Context, error):
         """Handles errors triggered while loading cogs"""
 
-        await ctx.send(f"{self.bot.e.cross} Error while loading the specified extension")
+        await ctx.send(
+            f"{self.bot.e.cross} Error while loading the specified extension"
+        )
 
     @commands.command()
     @commands.has_permissions(administrator=True)
@@ -97,7 +100,9 @@ class Owner(commands.Cog):
     async def reload_error(self, ctx: commands.Context, error):
         """Handles errors triggered while reloading cogs"""
 
-        await ctx.send(f"{self.bot.e.cross} Error while reloading the specified extension")
+        await ctx.send(
+            f"{self.bot.e.cross} Error while reloading the specified extension"
+        )
 
     @commands.command()
     @commands.is_owner()
